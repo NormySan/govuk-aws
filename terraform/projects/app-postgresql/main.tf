@@ -67,13 +67,6 @@ variable "instance_type" {
   default     = "db.m5.12xlarge"
 }
 
-# TODO: confirm that the standby instance is unused and if so, decommission it.
-variable "standby_instance_type" {
-  type        = "string"
-  description = "Instance type used for standby RDS"
-  default     = "db.m5.4xlarge"
-}
-
 variable "allocated_storage" {
   type        = "string"
   description = "current set minimum storage in GB for the RDS"
@@ -160,44 +153,11 @@ resource "aws_route53_record" "service_record" {
   records = ["${module.postgresql-primary_rds_instance.rds_instance_address}"]
 }
 
-module "postgresql-standby_rds_instance" {
-  source = "../../modules/aws/rds_instance"
-
-  name                       = "${var.stackname}-postgresql-standby"
-  default_tags               = "${map("Project", var.stackname, "aws_stackname", var.stackname, "aws_environment", var.aws_environment, "aws_migration", "postgresql_standby")}"
-  instance_class             = "${var.standby_instance_type}"
-  instance_name              = "${var.stackname}-postgresql-standby"
-  security_group_ids         = ["${data.terraform_remote_state.infra_security_groups.sg_postgresql-primary_id}"]
-  create_replicate_source_db = "1"
-  allocated_storage          = "${var.allocated_storage}"
-  max_allocated_storage      = "${var.max_allocated_storage}"
-  replicate_source_db        = "${module.postgresql-primary_rds_instance.rds_instance_id}"
-  event_sns_topic_arn        = "${data.terraform_remote_state.infra_monitoring.sns_topic_rds_events_arn}"
-  skip_final_snapshot        = "${var.skip_final_snapshot}"
-  parameter_group_name       = "${aws_db_parameter_group.postgresql_pg.name}"
-}
-
-resource "aws_route53_record" "replica_service_record" {
-  zone_id = "${data.aws_route53_zone.internal.zone_id}"
-  name    = "postgresql-standby.${var.internal_domain_name}"
-  type    = "CNAME"
-  ttl     = 300
-  records = ["${module.postgresql-standby_rds_instance.rds_replica_address}"]
-}
-
 module "alarms-rds-postgresql-primary" {
   source         = "../../modules/aws/alarms/rds"
   name_prefix    = "${var.stackname}-postgresql-primary"
   alarm_actions  = ["${data.terraform_remote_state.infra_monitoring.sns_topic_cloudwatch_alarms_arn}"]
   db_instance_id = "${module.postgresql-primary_rds_instance.rds_instance_id}"
-}
-
-module "alarms-rds-postgresql-standby" {
-  source               = "../../modules/aws/alarms/rds"
-  name_prefix          = "${var.stackname}-postgresql-standby"
-  alarm_actions        = ["${data.terraform_remote_state.infra_monitoring.sns_topic_cloudwatch_alarms_arn}"]
-  db_instance_id       = "${module.postgresql-standby_rds_instance.rds_replica_id}"
-  replicalag_threshold = "300"
 }
 
 # Outputs
@@ -221,14 +181,4 @@ output "postgresql-primary_endpoint" {
 output "postgresql-primary_address" {
   value       = "${module.postgresql-primary_rds_instance.rds_instance_address}"
   description = "postgresql instance address"
-}
-
-output "postgresql-standby_endpoint" {
-  value       = "${module.postgresql-standby_rds_instance.rds_replica_endpoint}"
-  description = "postgresql replica instance endpoint"
-}
-
-output "postgresql-standby_address" {
-  value       = "${module.postgresql-standby_rds_instance.rds_replica_address}"
-  description = "postgresql replica instance address"
 }

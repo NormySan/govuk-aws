@@ -21,16 +21,13 @@ RDS PostgreSQL instances
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_alarms-rds-postgresql-primary"></a> [alarms-rds-postgresql-primary](#module\_alarms-rds-postgresql-primary) | ../../modules/aws/alarms/rds | n/a |
-| <a name="module_alarms-rds-postgresql-standby"></a> [alarms-rds-postgresql-standby](#module\_alarms-rds-postgresql-standby) | ../../modules/aws/alarms/rds | n/a |
 | <a name="module_postgresql-primary_rds_instance"></a> [postgresql-primary\_rds\_instance](#module\_postgresql-primary\_rds\_instance) | ../../modules/aws/rds_instance | n/a |
-| <a name="module_postgresql-standby_rds_instance"></a> [postgresql-standby\_rds\_instance](#module\_postgresql-standby\_rds\_instance) | ../../modules/aws/rds_instance | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [aws_db_parameter_group.postgresql_pg](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/db_parameter_group) | resource |
-| [aws_route53_record.replica_service_record](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/route53_record) | resource |
 | [aws_route53_record.service_record](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/route53_record) | resource |
 | [aws_route53_zone.internal](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/data-sources/route53_zone) | data source |
 | [terraform_remote_state.infra_monitoring](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
@@ -64,7 +61,6 @@ RDS PostgreSQL instances
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | Set to true to NOT create a final snapshot when the cluster is deleted. | `string` | n/a | yes |
 | <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | Specifies whether or not to create the database from this snapshot | `string` | `""` | no |
 | <a name="input_stackname"></a> [stackname](#input\_stackname) | Stackname | `string` | n/a | yes |
-| <a name="input_standby_instance_type"></a> [standby\_instance\_type](#input\_standby\_instance\_type) | Instance type used for standby RDS | `string` | `"db.m5.4xlarge"` | no |
 | <a name="input_username"></a> [username](#input\_username) | PostgreSQL username | `string` | n/a | yes |
 
 ## Outputs
@@ -75,5 +71,3 @@ RDS PostgreSQL instances
 | <a name="output_postgresql-primary_endpoint"></a> [postgresql-primary\_endpoint](#output\_postgresql-primary\_endpoint) | postgresql instance endpoint |
 | <a name="output_postgresql-primary_id"></a> [postgresql-primary\_id](#output\_postgresql-primary\_id) | postgresql instance ID |
 | <a name="output_postgresql-primary_resource_id"></a> [postgresql-primary\_resource\_id](#output\_postgresql-primary\_resource\_id) | postgresql instance resource ID |
-| <a name="output_postgresql-standby_address"></a> [postgresql-standby\_address](#output\_postgresql-standby\_address) | postgresql replica instance address |
-| <a name="output_postgresql-standby_endpoint"></a> [postgresql-standby\_endpoint](#output\_postgresql-standby\_endpoint) | postgresql replica instance endpoint |

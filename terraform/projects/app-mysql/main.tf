@@ -147,38 +147,6 @@ module "alarms-rds-mysql-primary" {
   db_instance_id = "${module.mysql_primary_rds_instance.rds_instance_id}"
 }
 
-# MySQL Replica instance
-module "mysql_replica_rds_instance" {
-  source                     = "../../modules/aws/rds_instance"
-  name                       = "${var.stackname}-mysql-replica"
-  default_tags               = "${map("Project", var.stackname, "aws_stackname", var.stackname, "aws_environment", var.aws_environment, "aws_migration", "mysql-replica")}"
-  allocated_storage          = "${var.allocated_storage}"
-  max_allocated_storage      = "${var.max_allocated_storage}"
-  instance_class             = "${var.instance_type}"
-  instance_name              = "${var.stackname}-mysql-replica"
-  security_group_ids         = ["${data.terraform_remote_state.infra_security_groups.sg_mysql-replica_id}"]
-  create_replicate_source_db = "1"
-  replicate_source_db        = "${module.mysql_primary_rds_instance.rds_instance_id}"
-  event_sns_topic_arn        = "${data.terraform_remote_state.infra_monitoring.sns_topic_rds_events_arn}"
-  skip_final_snapshot        = "${var.skip_final_snapshot}"
-}
-
-resource "aws_route53_record" "replica_service_record" {
-  zone_id = "${data.aws_route53_zone.internal.zone_id}"
-  name    = "mysql-replica.${var.internal_domain_name}"
-  type    = "CNAME"
-  ttl     = 300
-  records = ["${module.mysql_replica_rds_instance.rds_replica_address}"]
-}
-
-module "alarms-rds-mysql-replica" {
-  source               = "../../modules/aws/alarms/rds"
-  name_prefix          = "${var.stackname}-mysql-replica"
-  alarm_actions        = ["${data.terraform_remote_state.infra_monitoring.sns_topic_cloudwatch_alarms_arn}"]
-  db_instance_id       = "${module.mysql_replica_rds_instance.rds_replica_id}"
-  replicalag_threshold = "300"
-}
-
 # Outputs
 # --------------------------------------------------------------
 
@@ -199,15 +167,5 @@ output "mysql_primary_endpoint" {
 
 output "mysql_primary_address" {
   value       = "${module.mysql_primary_rds_instance.rds_instance_address}"
-  description = "Mysql instance address"
-}
-
-output "mysql_replica_endpoint" {
-  value       = "${module.mysql_replica_rds_instance.rds_instance_endpoint}"
-  description = "Mysql instance endpoint"
-}
-
-output "mysql_replica_address" {
-  value       = "${module.mysql_replica_rds_instance.rds_instance_address}"
   description = "Mysql instance address"
 }

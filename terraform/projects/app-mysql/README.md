@@ -21,16 +21,13 @@ RDS Mysql Primary instance
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_alarms-rds-mysql-primary"></a> [alarms-rds-mysql-primary](#module\_alarms-rds-mysql-primary) | ../../modules/aws/alarms/rds | n/a |
-| <a name="module_alarms-rds-mysql-replica"></a> [alarms-rds-mysql-replica](#module\_alarms-rds-mysql-replica) | ../../modules/aws/alarms/rds | n/a |
 | <a name="module_mysql_primary_rds_instance"></a> [mysql\_primary\_rds\_instance](#module\_mysql\_primary\_rds\_instance) | ../../modules/aws/rds_instance | n/a |
-| <a name="module_mysql_replica_rds_instance"></a> [mysql\_replica\_rds\_instance](#module\_mysql\_replica\_rds\_instance) | ../../modules/aws/rds_instance | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [aws_db_parameter_group.mysql-primary](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/db_parameter_group) | resource |
-| [aws_route53_record.replica_service_record](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/route53_record) | resource |
 | [aws_route53_record.service_record](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/route53_record) | resource |
 | [aws_route53_zone.internal](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/data-sources/route53_zone) | data source |
 | [terraform_remote_state.infra_monitoring](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
@@ -73,5 +70,3 @@ RDS Mysql Primary instance
 | <a name="output_mysql_primary_endpoint"></a> [mysql\_primary\_endpoint](#output\_mysql\_primary\_endpoint) | Mysql instance endpoint |
 | <a name="output_mysql_primary_id"></a> [mysql\_primary\_id](#output\_mysql\_primary\_id) | Mysql instance ID |
 | <a name="output_mysql_primary_resource_id"></a> [mysql\_primary\_resource\_id](#output\_mysql\_primary\_resource\_id) | Mysql instance resource ID |
-| <a name="output_mysql_replica_address"></a> [mysql\_replica\_address](#output\_mysql\_replica\_address) | Mysql instance address |
-| <a name="output_mysql_replica_endpoint"></a> [mysql\_replica\_endpoint](#output\_mysql\_replica\_endpoint) | Mysql instance endpoint |

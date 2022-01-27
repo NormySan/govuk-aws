@@ -33,6 +33,7 @@ Graphite node
 | [aws_elb.graphite_external_elb](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/elb) | resource |
 | [aws_elb.graphite_internal_elb](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/elb) | resource |
 | [aws_iam_policy.graphite_1_iam_policy](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/iam_policy) | resource |
+| [aws_iam_role_policy_attachment.access_whisper_backups_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.graphite_1_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.graphite_1_iam_role_policy_cloudwatch_attachment](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.read_integration_graphite_database_backups_iam_role_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/2.46.0/docs/resources/iam_role_policy_attachment) | resource |
